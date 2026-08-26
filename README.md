@@ -10,7 +10,7 @@ Diseñar, aprovisionar, configurar y documentar una arquitectura web de tres cap
 
 ## Arquitectura
 
-![Diagrama de Arquitectura](Diseño%20Arquitectónico.drawio.png)
+![Diagrama de Arquitectura](diagrama-arquitectura.png)
 
 La arquitectura consta de tres capas desplegadas en la región `southamerica-east1`:
 
@@ -120,7 +120,7 @@ Design, provision, configure and document a three-tier web architecture (Network
 
 ## Architecture
 
-![Architecture Diagram](Diseño%20Arquitectónico.drawio.png)
+![Architecture Diagram](diagrama-arquitectura.png)
 
 The architecture consists of three layers deployed in the `southamerica-east1` region:
 

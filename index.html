@@ -1,3 +1,302 @@
+<!DOCTYPE html>
+<html lang="es" id="html-root">
+<head>
 <meta charset="UTF-8">
-<h1>¡Hola, Cloud-Ready Ops!</h1>
-<p>Servidor desplegado en Google Cloud.</p>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud-Ready Ops — Cristian González</title>
+<style>
+  :root{
+    --bg:#F4F6F9;
+    --surface:#FFFFFF;
+    --line:#DCE3ED;
+    --text:#1A2433;
+    --muted:#5B6B84;
+    --accent:#1F6F5C;
+    --accent-soft:#E4F3EF;
+    --mono:'IBM Plex Mono','Consolas',monospace;
+    --sans:'IBM Plex Sans','Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
+
+  header{
+    padding:56px 0 32px;
+    border-bottom:1px solid var(--line);
+  }
+  .top{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--accent);
+    letter-spacing:.06em;
+    margin:0 0 10px;
+  }
+  h1{font-size:clamp(26px,4.5vw,34px); margin:0 0 6px;}
+  .subtitle{color:var(--muted); margin:0; font-size:16px;}
+
+  #lang-toggle{
+    font-family:var(--mono);
+    font-size:13px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:7px;
+    padding:8px 12px;
+    cursor:pointer;
+    color:var(--text);
+  }
+  #lang-toggle:hover{border-color:var(--accent);}
+
+  section{padding:40px 0;}
+  section + section{border-top:1px solid var(--line);}
+  h2{
+    font-family:var(--mono);
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--accent);
+    margin:0 0 18px;
+  }
+  p{margin:0 0 14px; max-width:64ch;}
+
+  .diagram{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px;
+    margin:18px 0 26px;
+    font-family:var(--mono);
+    font-size:13.5px;
+  }
+  .d-row{display:flex; justify-content:center; margin:8px 0;}
+  .d-box{
+    border:1px solid var(--line);
+    border-radius:7px;
+    padding:10px 16px;
+    text-align:center;
+    background:var(--bg);
+  }
+  .d-box.internet{background:var(--accent-soft); border-color:var(--accent);}
+  .d-tier{
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:14px;
+    width:100%;
+    max-width:420px;
+    text-align:center;
+  }
+  .d-tier .label{color:var(--muted); font-size:11.5px; margin-bottom:10px;}
+  .d-tier .d-box{margin:6px auto; max-width:280px;}
+  .d-arrow{color:var(--muted); font-size:12px; text-align:center; margin:2px 0;}
+
+  ul{margin:0 0 14px; padding-left:20px;}
+  li{margin-bottom:6px;}
+  code, .inline-code{
+    font-family:var(--mono);
+    font-size:.92em;
+    background:var(--accent-soft);
+    color:var(--accent);
+    padding:1px 6px;
+    border-radius:4px;
+  }
+  pre{
+    background:#132430;
+    color:#DCE9E5;
+    border-radius:8px;
+    padding:16px 18px;
+    overflow-x:auto;
+    font-family:var(--mono);
+    font-size:13px;
+    margin:0 0 16px;
+  }
+
+  .lab{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px 22px;
+    margin-bottom:16px;
+  }
+  .lab h3{margin:0 0 8px; font-size:16px;}
+  .lab .tag{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+
+  .stack{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 0;}
+  .chip{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border:1px solid var(--line);
+    padding:4px 10px;
+    border-radius:999px;
+  }
+
+  .links{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:var(--mono);
+    font-size:13.5px;
+    padding:9px 14px;
+    border-radius:7px;
+    border:1px solid var(--line);
+    color:var(--text);
+    text-decoration:none;
+    background:var(--surface);
+  }
+  .btn.primary{background:var(--accent); color:#fff; border-color:var(--accent); font-weight:600;}
+  .btn:hover{border-color:var(--accent); text-decoration:none;}
+
+  footer{padding:36px 0 56px; color:var(--muted); font-family:var(--mono); font-size:12.5px;}
+
+  [data-en]{display:none;}
+  body.lang-en [data-es]{display:none;}
+  body.lang-en [data-en]{display:block;}
+  body.lang-en span[data-en]{display:inline;}
+
+  @media (max-width:600px){
+    header{padding:40px 0 24px;}
+    section{padding:28px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <p class="eyebrow">Trabajo Final Integrador</p>
+        <h1>Cloud-Ready Ops</h1>
+        <p class="subtitle" data-es>Arquitectura web de tres capas en Google Cloud Platform.</p>
+        <p class="subtitle" data-en>Three-tier web architecture on Google Cloud Platform.</p>
+      </div>
+      <button id="lang-toggle" onclick="toggleLang()">EN ⇄ ES</button>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2 data-es>Objetivo</h2>
+    <h2 data-en>Objective</h2>
+    <p data-es>Diseñar, aprovisionar, configurar y documentar una arquitectura web de tres capas (Red, Cómputo y Base de Datos) en la nube pública, simulando la entrega técnica a un cliente corporativo.</p>
+    <p data-en>Design, provision, configure and document a three-tier web architecture (Network, Compute and Database) on a public cloud, simulating a technical delivery to a corporate client.</p>
+
+    <div class="diagram">
+      <div class="d-row"><div class="d-box internet">Internet</div></div>
+      <div class="d-arrow">↓ 80 / 22</div>
+      <div class="d-row">
+        <div class="d-tier">
+          <div class="label" data-es>SUBRED PÚBLICA — 10.0.1.0/24</div>
+          <div class="label" data-en>PUBLIC SUBNET — 10.0.1.0/24</div>
+          <div class="d-box" data-es>Firewall · permite 80, 22</div>
+          <div class="d-box" data-en>Firewall · allows 80, 22</div>
+          <div class="d-box" data-es>servidor-web (Nginx) · IP pública</div>
+          <div class="d-box" data-en>servidor-web (Nginx) · public IP</div>
+        </div>
+      </div>
+      <div class="d-arrow">↓ 3306</div>
+      <div class="d-row">
+        <div class="d-tier">
+          <div class="label" data-es>SUBRED PRIVADA — 10.0.2.0/24</div>
+          <div class="label" data-en>PRIVATE SUBNET — 10.0.2.0/24</div>
+          <div class="d-box" data-es>Firewall · solo 3306 desde subred pública</div>
+          <div class="d-box" data-en>Firewall · only 3306 from public subnet</div>
+          <div class="d-box" data-es>servidor-db (MySQL) · sin IP pública</div>
+          <div class="d-box" data-en>servidor-db (MySQL) · no public IP</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <span class="chip">GCP</span>
+      <span class="chip">VPC / Subredes</span>
+      <span class="chip">Cloud NAT · Cloud Router</span>
+      <span class="chip">Compute Engine</span>
+      <span class="chip">Nginx</span>
+      <span class="chip">MySQL</span>
+      <span class="chip">Git / GitHub</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-es>Qué hicimos</h2>
+    <h2 data-en>What we did</h2>
+
+    <div class="lab">
+      <span class="tag" data-es>Semana 6</span><span class="tag" data-en>Week 6</span>
+      <h3 data-es>Diseño y Redes</h3>
+      <h3 data-en>Design and Networking</h3>
+      <p data-es>Diseñamos el diagrama de arquitectura y creamos la VPC <code>cloud-ready-ops-vpc</code> (<code>10.0.0.0/16</code>), con subred pública y privada, y las reglas de firewall entre capas.</p>
+      <p data-en>We designed the architecture diagram and created the VPC <code>cloud-ready-ops-vpc</code> (<code>10.0.0.0/16</code>), with a public and a private subnet, and the firewall rules between layers.</p>
+    </div>
+
+    <div class="lab">
+      <span class="tag" data-es>Semana 7</span><span class="tag" data-en>Week 7</span>
+      <h3 data-es>Cómputo y Servidor Web</h3>
+      <h3 data-en>Compute and Web Server</h3>
+      <p data-es>Levantamos <code>servidor-web</code> en la subred pública e instalamos Nginx para servir esta misma página.</p>
+      <p data-en>We launched <code>servidor-web</code> in the public subnet and installed Nginx to serve this very page.</p>
+      <pre>sudo apt install nginx
+cd /var/www/html
+sudo nano index.html</pre>
+    </div>
+
+    <div class="lab">
+      <span class="tag" data-es>Semana 8</span><span class="tag" data-en>Week 8</span>
+      <h3 data-es>Base de Datos y Versionado</h3>
+      <h3 data-en>Database and Version Control</h3>
+      <p data-es>Desplegamos <code>servidor-db</code> en la subred privada (sin IP pública), con salida a Internet mediante Cloud NAT y Cloud Router, e instalamos MySQL con la base <code>helpdesk_db</code>. Documentamos y versionamos todo en GitHub.</p>
+      <p data-en>We deployed <code>servidor-db</code> in the private subnet (no public IP), with Internet egress via Cloud NAT and Cloud Router, and installed MySQL with the <code>helpdesk_db</code> database. Everything was documented and versioned on GitHub.</p>
+    </div>
+
+    <div class="lab">
+      <span class="tag" data-es>Semana 9</span><span class="tag" data-en>Week 9</span>
+      <h3 data-es>Defensa Oral</h3>
+      <h3 data-en>Oral Defense</h3>
+      <p data-es>Defensa técnica del proyecto, mostrando el repositorio, la arquitectura y el funcionamiento en vivo.</p>
+      <p data-en>Technical project defense, showing the repository, the architecture and the live setup.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-es>Repositorio</h2>
+    <h2 data-en>Repository</h2>
+    <p data-es>El código, el diagrama, el script SQL y la documentación completa del proyecto están en GitHub.</p>
+    <p data-en>The code, the diagram, the SQL script and the full project documentation are on GitHub.</p>
+    <div class="links">
+      <a class="btn primary" href="https://github.com/CristianGonzalez3/cloud-ready-ops" target="_blank" rel="noopener">github.com/CristianGonzalez3/cloud-ready-ops →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Cristian Gastón González — Salta, Argentina</p>
+  </div>
+</footer>
+
+<script>
+function toggleLang(){
+  document.body.classList.toggle('lang-en');
+  document.getElementById('html-root').lang = document.body.classList.contains('lang-en') ? 'en' : 'es';
+}
+</script>
+
+</body>
+</html>
